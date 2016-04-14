@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jeson.cloudenote.fragment.CommunityFragment">
+
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gv_community"
+        android:layout_gravity="left|top"
+        android:horizontalSpacing="20dp"
+        android:verticalSpacing="18dp"
+        android:numColumns="3"/>
+</FrameLayout>

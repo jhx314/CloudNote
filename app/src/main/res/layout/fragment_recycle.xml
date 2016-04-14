@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jeson.cloudenote.fragment.RecycleFragment">
+
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gv_recycle"
+        android:layout_gravity="left|top"
+        android:verticalSpacing="18dp"
+        android:horizontalSpacing="20dp"
+        android:numColumns="3"
+        />
+</FrameLayout>
