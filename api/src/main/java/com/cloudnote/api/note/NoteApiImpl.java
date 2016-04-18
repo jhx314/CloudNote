@@ -39,4 +39,25 @@ public class NoteApiImpl implements INoteApi{
         }
         return apiResponse;
     }
+
+    @Override
+    public ApiResponse<Void> addNote(String userId, String bookId, String title) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("bookId", bookId);
+        params.put("title", title);
+        JSONObject jsonObject = httpEngine.postHandle(ADD_NOTE, params);
+        if (jsonObject == null) {
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return apiResponse;
+    }
 }

@@ -28,12 +28,12 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/etRegisterPassword"
-        android:layout_below="@+id/etRegisterUserName"
+        android:hint="密码"
+        android:layout_below="@+id/et_register_nickname"
+        android:layout_alignRight="@+id/et_register_nickname"
+        android:layout_alignEnd="@+id/et_register_nickname"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/etRegisterUserName"
-        android:layout_alignEnd="@+id/etRegisterUserName"
-        android:hint="密码" />
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -41,20 +41,20 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/etRePassword"
+        android:hint="确认密码"
         android:layout_below="@+id/etRegisterPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/etRegisterPassword"
-        android:layout_alignEnd="@+id/etRegisterPassword"
-        android:hint="确认密码" />
+        android:layout_alignEnd="@+id/etRegisterPassword" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="注册"
         android:id="@+id/btnRegister"
-        android:layout_marginLeft="59dp"
-        android:layout_marginStart="59dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginStart="47dp"
         android:layout_below="@+id/etRePassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -65,8 +65,21 @@
         android:text="返回"
         android:id="@+id/btnExit"
         android:layout_below="@+id/etRePassword"
-        android:layout_alignRight="@+id/etRePassword"
-        android:layout_alignEnd="@+id/etRePassword"
-        android:layout_marginRight="51dp"
-        android:layout_marginEnd="51dp" />
+        android:layout_toRightOf="@+id/btnRegister"
+        android:layout_toEndOf="@+id/btnRegister"
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/et_register_nickname"
+        android:layout_below="@+id/etRegisterUserName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/etRegisterUserName"
+        android:layout_alignEnd="@+id/etRegisterUserName"
+        android:hint="昵称" />
 </RelativeLayout>

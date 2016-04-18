@@ -22,17 +22,17 @@ public class UserActionImpl implements IUserAction {
 
     @Override
     public void Login(final String username, final String password, final ActionCallbackListener<Void> listener){
-        if(username.equals("") && username == ""){
+        if (username.equals("") || username == "") {
             listener.onFailure("用户名为空");
             return;
         }
-        if(password.equals("") && password == ""){
+        if (password.equals("") || password == "") {
             listener.onFailure("密码为空");
             return;
         }
         ApiResponse<Void> response = userApi.userLogin(username, password);
         if(response==null){
-            listener.onFailure("登录异常");
+            listener.onFailure("服务器异常,请稍后重试!");
             return;
         }
         if (response.getStatus() == 1){
@@ -49,4 +49,37 @@ public class UserActionImpl implements IUserAction {
         }
     }
 
+    @Override
+    public void Regist(String username, String password, String repassword, String nickname, ActionCallbackListener<Void> listener) {
+        if (username.equals("") || username == "") {
+            listener.onFailure("用户名为空");
+            return;
+        }
+        if (nickname.equals("") || nickname == "") {
+            listener.onFailure("昵称为空");
+            return;
+        }
+        if (password.equals("") || password == "") {
+            listener.onFailure("密码为空");
+            return;
+        }
+        if (!password.equals(repassword)) {
+            listener.onFailure("两次密码输入不一致");
+            return;
+        }
+
+        ApiResponse response = userApi.userRegist(username, password, nickname);
+        if (response == null) {
+            listener.onFailure("服务器异常,请稍后重试!");
+            return;
+        }
+        if (response.getStatus() != 0) {
+            listener.onFailure(response.getMsg());
+            return;
+        }
+        if (response.getStatus() == 0) {
+            listener.onSuccess(response.getMsg());
+            return;
+        }
+    }
 }

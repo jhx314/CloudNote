@@ -41,11 +41,21 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NotesActivity" />
-        <activity android:name=".NoteDetailsActivity" />
-        <activity android:name=".CollectionActivity" />
-        <activity android:name=".RecycleActivity" />
-        <activity android:name=".CommunityActivity" />
+        <activity
+            android:name=".NotesActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".NoteDetailsActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CollectionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RecycleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CommunityActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChangeActivity" />
     </application>
 

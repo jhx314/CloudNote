@@ -1,45 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.jeson.cloudenote.activity.CommunityActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="笔记标题"
-        android:id="@+id/tv_community_note_title"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_community_note_title"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout3">
+        android:background="@color/colorPrimary"
+        android:id="@+id/view">
 
-        <EditText
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="374dp"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/et_community_note_content"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+            android:layout_height="120dp">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="返回"
-        android:id="@+id/btn_community_note_exit"
-        android:layout_below="@+id/linearLayout3"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+            <LinearLayout
+                android:layout_margin="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_community_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_revert" />
+
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center"
+                    style="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="社区笔记" />
+
+                <ImageView
+                    android:id="@+id/iv_community_collection"
+                    android:layout_marginLeft="180dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/star_big_off" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_community_notetitle"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="笔记标题"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <AutoCompleteTextView
+        android:id="@+id/tv_community_notecontent"
+        android:layout_margin="20dp"
+        android:text="sdfdsfsdfsdfsdfsdfsdfsd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

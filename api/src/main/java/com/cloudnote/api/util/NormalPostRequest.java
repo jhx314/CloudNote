@@ -21,6 +21,9 @@ import java.util.Map;
 public class NormalPostRequest  extends Request<JSONObject> {
     private Map<String, String> mMap;
     private Response.Listener<JSONObject> mListener;
+    private JSONObject object = null;
+    private Boolean flag = false;
+
     public NormalPostRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, Map<String, String> map){
         super(Request.Method.POST, url, errorListener);
 
@@ -38,11 +41,14 @@ public class NormalPostRequest  extends Request<JSONObject> {
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-
+            object = new JSONObject(jsonString);
+            flag = true;
             return Response.success(new JSONObject(jsonString),HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
+            flag = true;
             return Response.error(new ParseError(e));
         } catch (JSONException je){
+            flag = true;
             return Response.error(new ParseError(je));
         }
     }
@@ -52,5 +58,23 @@ public class NormalPostRequest  extends Request<JSONObject> {
         mListener.onResponse(response);
     }
 
-
+    public JSONObject getResponseObject() {
+        int time = 0;
+        while (true) {
+            if (flag == true) {
+                break;
+            }
+            if (time > 130) {
+                JSONObject json = null;
+                return json;
+            }
+            try {
+                time++;
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return object;
+    }
 }
