@@ -1,13 +1,12 @@
 package com.jeson.cloudenote.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +46,18 @@ public class NotesActivity extends AppCompatActivity {
     private INoteAction noteAction;
     private List<Note> mNotes;
 
+    //广播 实现Note变化时刷新界面
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("action.refreshNotes")) {
+                new getBookList().start();
+                onResume();
+            }
+        }
+    };
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,6 +79,10 @@ public class NotesActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("action.refreshNotes");
+        registerReceiver(mBroadcastReceiver, intentFilter);
+
         getSupportActionBar().setTitle(getIntent().getStringExtra("bookName"));
 
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -185,14 +196,13 @@ public class NotesActivity extends AppCompatActivity {
                 tvNotesContent = (TextView) itemView.findViewById(R.id.tv_notes_content);
                 tvNotesTime = (TextView) itemView.findViewById(R.id.tv_notes_time);
                 cardView = (CardView) itemView.findViewById(R.id.cv_notes);
-                tvNotesId = (TextView) findViewById(R.id.tv_notes_id);
+                tvNotesId = (TextView) itemView.findViewById(R.id.tv_notes_id);
                 tvNotesTitle.setLetterSpacing(0.1f);
                 tvNotesContent.setLetterSpacing(0.1f);
                 tvNotesTime.setLetterSpacing(0.1f);
                 cardView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("NotesActivity", "单击recycleView");
                         TextView tvTitle = (TextView) v.findViewById(R.id.tv_notes_title);
                         TextView tvContent = (TextView) v.findViewById(R.id.tv_notes_content);
                         TextView tvId = (TextView) v.findViewById(R.id.tv_notes_id);
@@ -200,6 +210,7 @@ public class NotesActivity extends AppCompatActivity {
                         intent.putExtra("noteTitle", tvTitle.getText().toString());
                         intent.putExtra("noteContent", tvContent.getText().toString());
                         intent.putExtra("noteId", tvId.getText().toString());
+                        Log.d("notes", "noteId" + tvId.getText().toString());
                         startActivity(intent);
                     }
                 });
@@ -218,6 +229,7 @@ public class NotesActivity extends AppCompatActivity {
             holder.tvNotesTitle.setText(notes.get(position).getCn_note_title());
             holder.tvNotesContent.setText(notes.get(position).getCn_note_body());
             holder.tvNotesTime.setText(notes.get(position).getCreateTime());
+            holder.tvNotesId.setText(notes.get(position).getCn_note_id());
         }
 
         @Override

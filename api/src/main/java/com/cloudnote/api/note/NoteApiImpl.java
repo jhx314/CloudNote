@@ -36,6 +36,7 @@ public class NoteApiImpl implements INoteApi{
             apiResponse.setData(jsonObject.getString("data"));
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
         return apiResponse;
     }
@@ -57,6 +58,49 @@ public class NoteApiImpl implements INoteApi{
             apiResponse.setData(jsonObject.getString("data"));
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<Void> modiNote(String noteId, String title, String body) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("noteId", noteId);
+        params.put("title", title);
+        params.put("body", body);
+        JSONObject jsonObject = httpEngine.postHandle(MODI_NOTE, params);
+        if (jsonObject == null) {
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<Void> recycleNote(String noteId) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("noteId", noteId);
+        JSONObject jsonObject = httpEngine.postHandle(RECYVLE_NOTE, params);
+        if (jsonObject == null) {
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
         return apiResponse;
     }
