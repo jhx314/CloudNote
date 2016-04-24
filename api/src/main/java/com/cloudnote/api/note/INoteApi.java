@@ -18,6 +18,15 @@ public interface INoteApi {
     //将笔记放到回收站
     public final static String RECYVLE_NOTE = NetValue.url + "note/recycle.do";
 
+    //查询回收站笔记
+    public final static String RECYCLE_LIST = NetValue.url + "note/recycle_list.do";
+
+    //根据NoteId查询笔记
+    public final static String FIND_NOTE = NetValue.url + "note/body.do";
+
+    //彻底删除笔记
+    public final static String DELETE_NOTE = NetValue.url + "note/suredel.do";
+
     public ApiResponse<Void> getNoteList(String bookId);
 
     public ApiResponse<Void> addNote(String userId, String bookId,String title);
@@ -25,4 +34,10 @@ public interface INoteApi {
     public ApiResponse<Void> modiNote(String noteId, String title, String body);
 
     public ApiResponse<Void> recycleNote(String noteId);
+
+    public ApiResponse<Void> findRecycle(String userId);
+
+    public ApiResponse<Void> findNoteById(String noteId);
+
+    public ApiResponse<Void> deleteNote(String noteId);
 }

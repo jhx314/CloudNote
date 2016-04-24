@@ -104,4 +104,64 @@ public class NoteApiImpl implements INoteApi{
         }
         return apiResponse;
     }
+
+    @Override
+    public ApiResponse<Void> findRecycle(String userId) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        JSONObject jsonObject = httpEngine.postHandle(RECYCLE_LIST, params);
+        if (jsonObject == null){
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<Void> findNoteById(String noteId) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("noteId", noteId);
+        JSONObject jsonObject = httpEngine.postHandle(FIND_NOTE, params);
+        if (jsonObject == null){
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<Void> deleteNote(String noteId) {
+        ApiResponse apiResponse = new ApiResponse();
+        Map<String, String> params = new HashMap<>();
+        params.put("noteId", noteId);
+        JSONObject jsonObject = httpEngine.postHandle(DELETE_NOTE, params);
+        if (jsonObject == null) {
+            return null;
+        }
+        try {
+            apiResponse.setStatus(jsonObject.getInt("status"));
+            apiResponse.setMsg(jsonObject.getString("msg"));
+            apiResponse.setData(jsonObject.getString("data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return apiResponse;
+    }
 }

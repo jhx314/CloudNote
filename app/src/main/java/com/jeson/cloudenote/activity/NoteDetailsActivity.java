@@ -16,10 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.cloudnote.core.ActionCallbackListener;
 import com.cloudnote.core.note.INoteAction;
 import com.cloudnote.core.note.NoteActionImpl;
+import com.cloudnote.core.share.IShareAction;
+import com.cloudnote.core.share.ShareActionImpl;
 
 public class NoteDetailsActivity extends AppCompatActivity {
 
@@ -27,6 +30,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
     private TextView tvNoteContent;
     private String mNoteId;
     private INoteAction mNoteAction;
+    private IShareAction mShareAction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,9 @@ public class NoteDetailsActivity extends AppCompatActivity {
         tvNoteContent.setLetterSpacing(0.1f);
         etNoteTitle.setText(intent.getStringExtra("noteTitle"));
         tvNoteContent.setText(intent.getStringExtra("noteContent"));
-        mNoteAction = new NoteActionImpl(Volley.newRequestQueue(this));
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+        mNoteAction = new NoteActionImpl(requestQueue);
+        mShareAction = new ShareActionImpl(requestQueue);
     }
 
     @Override
@@ -71,14 +77,34 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
     //将笔记放到回收站
     public void recycleNote(MenuItem item) {
-        mNoteAction.recycleNote(mNoteId, new ActionCallbackListener() {
+        new AlertDialog.Builder(this).setTitle("提示").
+                setMessage("是否确定将该笔记放到回收站").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mNoteAction.recycleNote(mNoteId, new ActionCallbackListener() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        Toast.makeText(getApplicationContext(), "将笔记删除成功!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.setAction("action.refreshNotes");
+                        sendBroadcast(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).setNegativeButton("取消",null).show();
+    }
+
+    public void shareNote(MenuItem item) {
+        mShareAction.shareNote(mNoteId, new ActionCallbackListener() {
             @Override
             public void onSuccess(Object data) {
-                Toast.makeText(getApplicationContext(), "将笔记删除成功!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.setAction("action.refreshNotes");
-                sendBroadcast(intent);
-                finish();
+                Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
