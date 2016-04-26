@@ -102,6 +102,14 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        if (mBroadcastReceiver != null){
+            unregisterReceiver(mBroadcastReceiver);
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_notes, menu);
         return super.onCreateOptionsMenu(menu);
@@ -128,7 +136,7 @@ public class NotesActivity extends AppCompatActivity {
             final EditText etNoteName = new EditText(getApplicationContext());
             new AlertDialog.Builder(NotesActivity.this).
                     setTitle("添加笔记").
-                    setMessage("笔记本名称").
+                    setMessage("笔记名称").
                     setView(etNoteName, 50, 10, 50, 20).
                     setNegativeButton("取消", null).
                     setPositiveButton("确认", new DialogInterface.OnClickListener() {

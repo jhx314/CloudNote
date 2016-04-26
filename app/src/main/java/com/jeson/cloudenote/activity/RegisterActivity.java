@@ -1,5 +1,6 @@
 package com.jeson.cloudenote.activity;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -14,14 +15,13 @@ import com.android.volley.toolbox.Volley;
 import com.cloudnote.core.ActionCallbackListener;
 import com.cloudnote.core.user.IUserAction;
 import com.cloudnote.core.user.UserActionImpl;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private IUserAction userAction;
-    private CatLoadingView loadingView;
     private final static int REGIST_SUCCESS = 0;
     private final static int REGIST_FAILURE = 1;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         final Button btnRegiser = (Button) findViewById(R.id.btnRegister);
         final Button btnExit = (Button) findViewById(R.id.btnExit);
-        loadingView = new CatLoadingView();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("注册中");
+        progressDialog.setMessage("请稍后...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         //RequestQueue执行请求的请求队列
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -43,15 +47,14 @@ public class RegisterActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                progressDialog.dismiss();
                 switch (msg.what) {
                     case REGIST_SUCCESS:
-                        loadingView.dismiss();
                         String message = msg.getData().getString("msg");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     case REGIST_FAILURE:
-                        loadingView.dismiss();
                         String message1 = msg.getData().getString("msg");
                         Toast.makeText(getApplicationContext(), message1, Toast.LENGTH_SHORT).show();
                         break;
@@ -64,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegiser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingView.show(getSupportFragmentManager(), "");
+                progressDialog.show();
                 new Thread() {
                     @Override
                     public void run() {

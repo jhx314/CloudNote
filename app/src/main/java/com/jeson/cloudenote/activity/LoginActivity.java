@@ -1,14 +1,13 @@
 package com.jeson.cloudenote.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +19,6 @@ import com.android.volley.toolbox.Volley;
 import com.cloudnote.core.ActionCallbackListener;
 import com.cloudnote.core.user.IUserAction;
 import com.cloudnote.core.user.UserActionImpl;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -51,14 +49,17 @@ public class LoginActivity extends AppCompatActivity {
                 LoginActivity.this.startActivity(registerIntent);
             }
         });
-        final CatLoadingView loadingView = new CatLoadingView();
-
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("登陆中");
+        progressDialog.setMessage("请稍后...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                progressDialog.dismiss();
                 switch (msg.what) {
                     case LOGIN_SUCCESS:
-                        loadingView.dismiss();
                         Bundle bundle = msg.getData();
                         String userId = bundle.getString("userId");
                         SharedPreferences.Editor editor = getSharedPreferences("user", Activity.MODE_PRIVATE).edit();
@@ -68,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case LOGIN_FAILURE:
-                        loadingView.dismiss();
                         Bundle bundle1 = msg.getData();
                         String error = bundle1.getString("error");
                         Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingView.show(getSupportFragmentManager(), "loadingView");
+                progressDialog.show();
                 new Thread() {
                     @Override
                     public void run() {

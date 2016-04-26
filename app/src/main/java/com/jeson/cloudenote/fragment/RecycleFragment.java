@@ -1,6 +1,7 @@
 package com.jeson.cloudenote.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +26,6 @@ import com.cloudnote.core.note.NoteActionImpl;
 import com.cloudnote.model.Note;
 import com.jeson.cloudenote.activity.R;
 import com.jeson.cloudenote.activity.RecycleNoteDetailsActivity;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +38,17 @@ public class RecycleFragment extends Fragment {
     private INoteAction mNoteAction;
     private String mUserId;
     private GridViewAdapter mGvAdapter;
-    private CatLoadingView mLoadingView;
+    private ProgressDialog progressDialog;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            progressDialog.dismiss();
             switch (msg.what){
                 case LISTRECYCLE_SUCCESS:
-                    mLoadingView.dismiss();
                     gv.setAdapter(mGvAdapter);
                     break;
                 case LISTRECYCLE_FAILURE:
-                    mLoadingView.dismiss();
                     String err = msg.getData().getString("error");
                     Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
                     break;
@@ -92,8 +90,12 @@ public class RecycleFragment extends Fragment {
                 gvOnclick(view);
             }
         });
-        mLoadingView = new CatLoadingView();
-        mLoadingView.show(getFragmentManager(),"loadingView");
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("提示");
+        progressDialog.setMessage("请稍后...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         new loadingRecycleThread().start();
         return view;
     }

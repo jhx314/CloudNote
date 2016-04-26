@@ -1,6 +1,6 @@
 package com.jeson.cloudenote.fragment;
 
-
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +28,6 @@ import com.cloudnote.model.NoteBook;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.jeson.cloudenote.activity.NotesActivity;
 import com.jeson.cloudenote.activity.R;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.util.List;
 
@@ -45,18 +44,17 @@ public class NoteBookFragment extends Fragment {
     private GridViewAdapter gvAdapter;
     private String userId;
     private INoteBookAction noteBookAction;
-    private CatLoadingView loadingView;
+    private ProgressDialog progressDialog;
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            progressDialog.dismiss();
             switch (msg.what) {
                 case LISTBOOK_SUCCESS:
-                    loadingView.dismiss();
                     gv.setAdapter(gvAdapter);
                     break;
                 case LISTBOOK_FAILURE:
-                    loadingView.dismiss();
                     String err = msg.getData().getString("error");
                     Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
                     break;
@@ -65,11 +63,9 @@ public class NoteBookFragment extends Fragment {
                 case RENAMEBOOK_FAILURE:
                     break;
                 case ADDBOOK_SUCCESS:
-                    loadingView.dismiss();
                     new ListBookThread().start();
                     break;
                 case ADDBOOK_FAILURE:
-                    loadingView.dismiss();
                     String error = msg.getData().getString("error");
                     Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                     break;
@@ -88,8 +84,10 @@ public class NoteBookFragment extends Fragment {
         userId = getArguments().getString("userId");
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         noteBookAction = new NoteBookActionImpl(requestQueue);
-        loadingView = new CatLoadingView();
-        loadingView.show(getFragmentManager(), "loadingView");
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("提示");
+        progressDialog.setMessage("请稍后...");
+        progressDialog.show();
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +95,11 @@ public class NoteBookFragment extends Fragment {
                 final EditText et_addBookName = new EditText(getContext());
                 new AlertDialog.Builder(getContext()).setTitle("添加笔记本").
                         setIcon(R.mipmap.inote).
-                        setView(et_addBookName).
+                        setView(et_addBookName, 50, 10, 50, 20).
                         setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                loadingView.show(getFragmentManager(), "addBook");
+                                progressDialog.show();
                                 new Thread() {
                                     @Override
                                     public void run() {
@@ -161,7 +159,7 @@ public class NoteBookFragment extends Fragment {
                 final EditText et_reNameBook = new EditText(getContext());
                 new AlertDialog.Builder(getContext()).setTitle("重命名").
                         setMessage("笔记本名称").
-                        setView(et_reNameBook).
+                        setView(et_reNameBook, 50, 10, 50, 20).
                         setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
