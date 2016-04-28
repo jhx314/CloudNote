@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="回收笔记"
+        android:id="@+id/menu_recycle_note_recycle"
+        android:icon="@android:drawable/ic_menu_revert"
+        app:showAsAction="always"
+        android:onClick="recycleNote"/>
+
+    <item
+        android:title="彻底删除笔记"
+        android:id="@+id/menu_recycle_note_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="always"
+        android:onClick="deleteNote"/>
+</menu>

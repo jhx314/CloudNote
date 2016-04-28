@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="重命名笔记本"
+        android:icon="@drawable/ic_change"
+        android:id="@+id/menu_notes_modifybook"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="添加笔记"
+        android:id="@+id/menu_notes_addnote"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="删除笔记本"
+        android:id="@+id/menu_notes_deletebook"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="always"/>
+</menu>
