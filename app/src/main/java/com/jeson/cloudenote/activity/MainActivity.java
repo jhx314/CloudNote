@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jeson.cloudenote.fragment.CollectionFragment;
 import com.jeson.cloudenote.fragment.CommunityFragment;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         String userId = preferences.getString("userId", "");
         return userId;
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +66,21 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, noteBookFragment).commit();
     }
 
+    private long exitTime = 0;
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (System.currentTimeMillis() - exitTime > 2000){
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }else{
+                finish();
+                System.exit(0);
+            }
+            //super.onBackPressed();
         }
     }
 

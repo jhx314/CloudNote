@@ -137,7 +137,7 @@ public class NotesActivity extends AppCompatActivity {
             new AlertDialog.Builder(NotesActivity.this).
                     setTitle("添加笔记").
                     setMessage("笔记名称").
-                    setView(etNoteName, 50, 10, 50, 20).
+                    setView(etNoteName, 50, 50, 50, 20).
                     setNegativeButton("取消", null).
                     setPositiveButton("确认", new DialogInterface.OnClickListener() {
                         @Override
@@ -157,6 +157,21 @@ public class NotesActivity extends AppCompatActivity {
                             });
                         }
                     }).show();
+        }else if(item.getItemId() == R.id.menu_notes_modifybook){
+            AlertDialog.Builder builder = new AlertDialog.Builder(NotesActivity.this);
+            EditText etName = new EditText(getApplicationContext());
+            builder.setIcon(R.drawable.ic_change);
+            builder.setTitle("提示!修改笔记本名称");
+            builder.setMessage("新的笔记本名称为:");
+            builder.setView(etName,50,50,50,20);
+            builder.setNegativeButton("取消",null);
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
         }
         return super.onOptionsItemSelected(item);
     }
